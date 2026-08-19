@@ -23,7 +23,11 @@ export async function buildApp(config: AppConfig): Promise<FastifyInstance> {
   const app = Fastify({ logger: { level: config.NODE_ENV === 'production' ? 'info' : 'debug' } });
 
   await app.register(helmet);
-  await app.register(cors, { origin: config.CORS_ORIGIN, credentials: true });
+  const allowedOrigins = config.CORS_ORIGIN.split(',').map(o => o.trim());
+  await app.register(cors, {
+    origin: (origin, cb) => cb(null, !origin || allowedOrigins.some(o => origin.startsWith(o))),
+    credentials: true,
+  });
   await app.register(jwt, { secret: config.JWT_SECRET });
   await app.register(rateLimit, { max: 100, timeWindow: '1 minute' });
   await registerCatalogRoutes(app);
