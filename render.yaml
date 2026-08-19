@@ -24,8 +24,12 @@ services:
   - type: web
     name: grocery-commerce-dashboard
     runtime: static
-    buildCommand: npm ci && npm run build --workspace @grocery/dashboard
+    buildCommand: npm ci && npm run build --workspace @grocery/shared && npm run build --workspace @grocery/dashboard
     staticPublishPath: apps/dashboard/dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
     envVars:
       - key: VITE_API_URL
         sync: false
