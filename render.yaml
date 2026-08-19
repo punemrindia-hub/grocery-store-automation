@@ -2,7 +2,7 @@ services:
   - type: web
     name: grocery-commerce-api
     runtime: node
-    buildCommand: npm ci && npm run db:generate && npm run db:deploy --workspace @grocery/database && npm run build --workspace @grocery/api
+    buildCommand: npm ci && npm run build --workspace @grocery/shared && npm run db:generate && npm run db:deploy --workspace @grocery/database && npm run build --workspace @grocery/api
     startCommand: npm run start --workspace @grocery/api
     healthCheckPath: /health
     envVars:
