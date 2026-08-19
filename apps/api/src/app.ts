@@ -22,7 +22,16 @@ const prisma = new PrismaClient();
 export async function buildApp(config: AppConfig): Promise<FastifyInstance> {
   const app = Fastify({ logger: { level: config.NODE_ENV === 'production' ? 'info' : 'debug' } });
 
-  await app.register(helmet);
+  app.addHook('onRequest', async (request, reply) => {
+    reply.header('Access-Control-Allow-Origin', request.headers.origin ?? '*');
+    reply.header('Access-Control-Allow-Credentials', 'true');
+    reply.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
+    reply.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+    if (request.method === 'OPTIONS') {
+      await reply.status(204).send();
+    }
+  });
+  await app.register(helmet, { crossOriginResourcePolicy: false });
   await app.register(cors, { origin: true, credentials: true });
   await app.register(jwt, { secret: config.JWT_SECRET });
   await app.register(rateLimit, { max: 100, timeWindow: '1 minute' });
