@@ -25,7 +25,6 @@
   h1{font-size:22px}
   .page-title{font-size:26px}
   .header-actions{flex-wrap:wrap;gap:8px}
-  .kiosk-button{display:none}
   .language-toggle,.user-chip{padding:8px 12px;font-size:13px}
   .hero{flex-direction:column;padding:24px;gap:20px}
   .hero h2{font-size:26px}
