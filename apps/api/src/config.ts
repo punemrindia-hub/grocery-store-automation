@@ -7,7 +7,7 @@ const envSchema = z.object({
   DATABASE_URL: z.string().url(),
   REDIS_URL: z.string().url().optional(),
   JWT_SECRET: z.string().min(32),
-  CORS_ORIGIN: z.string().url(),
+  CORS_ORIGIN: z.string().url().optional(),
 });
 
 export type AppConfig = z.infer<typeof envSchema>;
